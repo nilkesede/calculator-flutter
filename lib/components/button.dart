@@ -34,18 +34,18 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: this.big ? 2 : 1,
+      flex: big ? 2 : 1,
       child: RaisedButton(
-        color: this.color,
+        color: color,
         child: Text(
-          this.text,
+          text,
           style: TextStyle(
             color: Colors.white,
             fontSize: 32,
             fontWeight: FontWeight.w200
           ),
         ),
-        onPressed: () => this.cb(this.text),
+        onPressed: () => cb(text),
       ),
     );
   }

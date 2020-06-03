@@ -13,8 +13,8 @@ class _CalculatorState extends State<Calculator> {
   final Memory memory = Memory();
 
   _onPressed(String command) {
-    this.setState(() {
-      this.memory.applyCommand(command);
+    setState(() {
+      memory.applyCommand(command);
     });
   }
 
@@ -27,8 +27,8 @@ class _CalculatorState extends State<Calculator> {
     return MaterialApp(
       home: Column(
         children: <Widget>[
-          Display(this.memory.value),
-          Keyboard(this._onPressed)
+          Display(memory.value),
+          Keyboard(_onPressed)
         ]
       )
     );

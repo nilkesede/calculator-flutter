@@ -19,7 +19,7 @@ class Display extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: AutoSizeText(
-                this.text,
+                text,
                 minFontSize: 20,
                 maxFontSize: 80,
                 maxLines: 1,
