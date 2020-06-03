@@ -8,21 +8,25 @@ class Button extends StatelessWidget {
   final String text;
   final bool big;
   final Color color;
+  final void Function(String) cb;
 
   Button({
     @required this.text,
+    @required this.cb,
     this.big = false,
     this.color = DEFAULT
   });
 
   Button.big({
     @required this.text,
+    @required this.cb,
     this.big = true,
     this.color = DEFAULT
   });
 
   Button.operation({
     @required this.text,
+    @required this.cb,
     this.big = false,
     this.color = OPERATION
   });
@@ -41,7 +45,7 @@ class Button extends StatelessWidget {
             fontWeight: FontWeight.w200
           ),
         ),
-        onPressed: () {},
+        onPressed: () => this.cb(this.text),
       ),
     );
   }

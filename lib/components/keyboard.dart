@@ -3,6 +3,10 @@ import './button_row.dart';
 import './button.dart';
 
 class Keyboard extends StatelessWidget {
+  final void Function(String) cb;
+
+  Keyboard(this.cb);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -10,32 +14,32 @@ class Keyboard extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ButtonRow([
-            Button.big(text: 'AC'),
-            Button(text: '%'),
-            Button.operation(text: '/'),
+            Button.big(text: 'AC', color: Button.DARK, cb: this.cb),
+            Button(text: '%', color: Button.DARK, cb: this.cb),
+            Button.operation(text: '/', cb: this.cb),
           ]),
           ButtonRow([
-            Button(text: '7'),
-            Button(text: '8'),
-            Button(text: '9'),
-            Button.operation(text: 'x'),
+            Button(text: '7', cb: this.cb),
+            Button(text: '8', cb: this.cb),
+            Button(text: '9', cb: this.cb),
+            Button.operation(text: 'x', cb: this.cb),
           ]),
           ButtonRow([
-            Button(text: '4'),
-            Button(text: '5'),
-            Button(text: '6'),
-            Button.operation(text: '-')
+            Button(text: '4', cb: this.cb),
+            Button(text: '5', cb: this.cb),
+            Button(text: '6', cb: this.cb),
+            Button.operation(text: '-', cb: this.cb)
           ]),
           ButtonRow([
-            Button(text: '1'),
-            Button(text: '2'),
-            Button(text: '3'),
-            Button.operation(text: '+')
+            Button(text: '1', cb: this.cb),
+            Button(text: '2', cb: this.cb),
+            Button(text: '3', cb: this.cb),
+            Button.operation(text: '+', cb: this.cb)
           ]),
           ButtonRow([
-            Button.big(text: '0'),
-            Button(text: ','),
-            Button.operation(text: '=')
+            Button.big(text: '0', cb: this.cb),
+            Button(text: ',', cb: this.cb),
+            Button.operation(text: '=', cb: this.cb)
           ]),
         ],
       ),
