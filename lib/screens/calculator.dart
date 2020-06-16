@@ -25,11 +25,14 @@ class _CalculatorState extends State<Calculator> {
     ]);
 
     return MaterialApp(
-      home: Column(
-        children: <Widget>[
-          Display(memory.value),
-          Keyboard(_onPressed)
-        ]
+      home: new Scaffold(
+        backgroundColor: Color.fromRGBO(48, 48, 48, 1),
+        body: Column(
+          children: <Widget>[
+            Display(memory.value),
+            Keyboard(_onPressed)
+          ]
+        ),
       )
     );
   }
