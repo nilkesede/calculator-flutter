@@ -1,5 +1,5 @@
 class Memory {
-  static const operations = const ['%', '/', 'x', '-', '+', '='];
+  static const operations = const ['+/-', '%', '/', 'x', '-', '+', '='];
 
   final _buffer = [0.0, 0.0];
   int _bufferIndex = 0;
@@ -8,49 +8,19 @@ class Memory {
   bool _wipeValue = false;
   String _lastCommand;
 
-  void applyCommand(String command) {
-    if (_isReplacingOperation(command)) {
-      _operation = command;
-      return;
-    }
-
-    if (command == 'AC')
-      return _allClear();
-
-    if (operations.contains(command))
-      return _setOperation(command);
-
-    _addDigit(command);
-    _lastCommand = command;
+  String get value {
+    return _value;
   }
 
-  _isReplacingOperation(String command) {
-    return operations.contains(_lastCommand)
-      && operations.contains(command)
-      && _lastCommand != '='
-      && command != '=';
-  }
-
-  _setOperation(String newOperation) {
-    bool isEqualSign = newOperation == '=';
-
-    _wipeValue = true;
-
-    if (_bufferIndex == 0 && !isEqualSign) {
-      _operation = newOperation;
-      _bufferIndex = 1;
-      return;
-    }
-
-    if (_bufferIndex == 1) {
-      _buffer[0] = _calculate();
-      _buffer[1] = 0.0;
-
-      _value = _buffer[0].toString();
-      _value = _value.endsWith('.0') ? _value.split('.')[0] : _value;
-
-      _operation = isEqualSign ? null : newOperation;
-      _bufferIndex = isEqualSign ? 0 : 1;
+  _calculate() {
+    switch (_operation) {
+      case '+/-': return _buffer[0] * -1;
+      case '%': return _buffer[0] / 100;
+      case '/': return _buffer[0] / _buffer[1];
+      case 'x': return _buffer[0] * _buffer[1];
+      case '-': return _buffer[0] - _buffer[1];
+      case '+': return _buffer[0] + _buffer[1];
+      default: return _buffer[0];
     }
   }
 
@@ -70,7 +40,41 @@ class Memory {
     _buffer[_bufferIndex] = double.tryParse(_value) ?? 0;
   }
 
-  _allClear() {
+  _setOperation(String operation) {
+    bool isEqualSign = operation == '=';
+    bool isPercent = operation == '%';
+    bool isModulo = operation == '+/-';
+
+    _wipeValue = true;
+
+    if (isPercent || isModulo) {
+      _operation = operation;
+      _buffer[_bufferIndex] = _calculate();
+      _value = _buffer[_bufferIndex].toString();
+      _value = _value.endsWith('.0') ? _value.split('.')[0] : _value;
+
+      return;
+    }
+
+    if (_bufferIndex == 0 && !isEqualSign) {
+      _operation = operation;
+      _bufferIndex = 1;
+      return;
+    }
+
+    if (_bufferIndex == 1) {
+      _buffer[0] = _calculate();
+      _buffer[1] = 0.0;
+
+      _value = _buffer[0].toString();
+      _value = _value.endsWith('.0') ? _value.split('.')[0] : _value;
+
+      _operation = isEqualSign ? null : operation;
+      _bufferIndex = isEqualSign ? 0 : 1;
+    }
+  }
+
+  _clearAll() {
     _value = '0';
     _buffer.setAll(0, [0.0, 0.0]);
     _operation = null;
@@ -78,18 +82,26 @@ class Memory {
     _wipeValue = false;
   }
 
-  _calculate() {
-    switch (_operation) {
-      case '%': return _buffer[0] % _buffer[1];
-      case '/': return _buffer[0] / _buffer[1];
-      case 'x': return _buffer[0] * _buffer[1];
-      case '-': return _buffer[0] - _buffer[1];
-      case '+': return _buffer[0] + _buffer[1];
-      default: return _buffer[0];
-    }
+  _isReplacingOperation(String command) {
+    return operations.contains(_lastCommand)
+      && operations.contains(command)
+      && _lastCommand != '='
+      && command != '=';
   }
 
-  String get value {
-    return _value;
+  void execute(String command) {
+    if (_isReplacingOperation(command)) {
+      _operation = command;
+      return;
+    }
+
+    if (command == 'AC')
+      return _clearAll();
+
+    if (operations.contains(command))
+      return _setOperation(command);
+
+    _addDigit(command);
+    _lastCommand = command;
   }
 }
