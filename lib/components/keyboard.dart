@@ -9,8 +9,8 @@ class Keyboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 450,
+    return Expanded(
+      flex: 2,
       child: Column(
         children: <Widget>[
           ButtonRow([
